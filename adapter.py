@@ -16,7 +16,7 @@ def write_new_file(review_file_path, label_file_path, output_file_path):
         for review, sentiment in zip(review_file, label_file):
             record = dict()
             record["review"] = review.strip()
-            record["score"] = 5 if sentiment.strip() == "pos" else 1
+            record["score"] = "5" if sentiment.strip() == "pos" else "1"
             output_file.write("{}\n".format(json.dumps(record)))
 
 write_new_file(train_review_file_path, train_label_file_path, output_train_file_path)
