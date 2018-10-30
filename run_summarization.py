@@ -190,13 +190,14 @@ def run_pre_train_generator(model, batcher, max_run_epoch, sess, saver, train_di
                 t0 = time.time()
                 tf.logging.info('loss: %f', loss_window / 100)  # print the loss to screen
                 loss_window = 0.0
-            if train_step % 10000 == 0:
+            # if train_step % 10000 == 0:
 
-                generator.generate_test_negetive_example("test-generate-transfer/" + str(epoch) + "epoch_step" + str(step) + "_temp_positive",batcher)
-                generator.generate_test_positive_example("test-generate/" + str(epoch) + "epoch_step" + str(step) + "_temp_positive", batcher)
-                #run_test_our_method(cla_cnn_batcher, cnn_classifier, sess_cnn,
-                #                    "test-generate-transfer/" + str(epoch) + "epoch_step" + str(step) + "_temp_positive"+"/*")
-                saver.save(sess, train_dir + "/model", global_step=train_step)
+        generator.generate_test_negetive_example("test-generate-transfer/" + str(epoch) + "epoch_step" + str(step) + "_temp_positive",batcher)
+        generator.generate_test_positive_example("test-generate/" + str(epoch) + "epoch_step" + str(step) + "_temp_positive", batcher)
+        #run_test_our_method(cla_cnn_batcher, cnn_classifier, sess_cnn,
+        #                    "test-generate-transfer/" + str(epoch) + "epoch_step" + str(step) + "_temp_positive"+"/*")
+        saver.save(sess, train_dir + "/model", global_step=train_step)
+        
         epoch += 1
         tf.logging.info("finished %d epoches", epoch)
 
@@ -231,10 +232,9 @@ def run_pre_train_classification(model, bachter, max_run_epoch, sess,saver, trai
                 tf.logging.info('loss: %f', loss_window / 100)  # print the loss to screen
                 loss_window = 0.0
 
-            if train_step % 10000 == 0:
-                acc = run_test_classification(model, bachter, sess, saver, str(train_step))
-                tf.logging.info('acc: %.6f', acc)  # print the loss to screen
-                saver.save(sess, train_dir + "/model", global_step=train_step)
+        acc = run_test_classification(model, bachter, sess, saver, str(train_step))
+        tf.logging.info('acc: %.6f', acc)  # print the loss to screen
+        saver.save(sess, train_dir + "/model", global_step=train_step)
         epoch +=1
         tf.logging.info("finished %d epoches", epoch)
 
@@ -285,10 +285,10 @@ def run_train_cnn_classifier(model, batcher, max_run_epoch,  sess,saver, train_d
                 t0 = time.time()
                 tf.logging.info('loss: %f', loss_window / 100)  # print the loss to screen
                 loss_window = 0.0
-            if train_step % 10000 == 0:
-                acc = run_test_cnn_classification(model, batcher, sess, saver, str(train_step))
-                tf.logging.info('cnn evaluate test acc: %.6f', acc)  # print the loss to screen
-                saver.save(sess, train_dir + "/model", global_step=train_step)
+            # if train_step % 10000 == 0:
+        acc = run_test_cnn_classification(model, batcher, sess, saver, str(train_step))
+        tf.logging.info('cnn evaluate test acc: %.6f', acc)  # print the loss to screen
+        saver.save(sess, train_dir + "/model", global_step=train_step)
         epoch += 1
         tf.logging.info("finished %d epoches", epoch)
 
@@ -473,11 +473,11 @@ def run_pre_train_sentimentor(model, bachter, max_run_epoch, sess,saver, train_d
                 tf.logging.info('loss: %f', loss_window / 100)  # print the loss to screen
                 loss_window = 0.0
 
-            if train_step % 10000 == 0:
-                acc = run_test_sentimentor(model, bachter, sess, saver, str(train_step))
-                tf.logging.info('acc: %.6f', acc)  # print the loss to screen
-                saver.save(sess, train_dir + "/model", global_step=train_step)
+            # if train_step % 10000 == 0:
             step += 1
+        acc = run_test_sentimentor(model, bachter, sess, saver, str(train_step))
+        tf.logging.info('acc: %.6f', acc)  # print the loss to screen
+        saver.save(sess, train_dir + "/model", global_step=train_step)
         epoch +=1
         tf.logging.info("finished %d epoches", epoch)
 
