@@ -470,7 +470,7 @@ def run_pre_train_sentimentor(model, bachter, max_run_epoch, sess,saver, train_d
                 t1 = time.time()
                 tf.logging.info('seconds for %d training sentimentor step: %.3f ', train_step, (t1 - t0) / 100)
                 t0 = time.time()
-                tf.logging.info('loss: %f', loss_window / 100)  # print the loss to screen
+                tf.logging.info('step: %d, loss: %f', step, loss_window / 100)  # print the loss to screen
                 loss_window = 0.0
 
             # if train_step % 10000 == 0:
