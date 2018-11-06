@@ -190,10 +190,13 @@ def run_pre_train_generator(model, batcher, max_run_epoch, sess, saver, train_di
                 loss_window = 0.0
             # if train_step % 10000 == 0:
 
+        tf.logging.info("Generating negative samples")
         generator.generate_test_negetive_example("test-generate-transfer/" + str(epoch) + "epoch_step" + str(step) + "_temp_positive",batcher)
+        tf.logging.info("Generating positive samples")
         generator.generate_test_positive_example("test-generate/" + str(epoch) + "epoch_step" + str(step) + "_temp_positive", batcher)
         #run_test_our_method(cla_cnn_batcher, cnn_classifier, sess_cnn,
         #                    "test-generate-transfer/" + str(epoch) + "epoch_step" + str(step) + "_temp_positive"+"/*")
+        tf.logging.info("Saving model")
         saver.save(sess, train_dir + "/model", global_step=train_step)
         
         epoch += 1

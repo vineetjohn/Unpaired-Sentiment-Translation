@@ -34,6 +34,7 @@ class Generate_training_sample(object):
         counter = 0
 
         for step in range(len(self.batches)):
+            tf.logging.info('step: %d/%d of generating training samples', step, len(self.batches)) 
             decode_result = self._model.run_attention_weight_ypred_auc(self._sess, self.batches[step])
             #print (decode_result)
             decode_result['y_pred_auc'] = decode_result['y_pred_auc'].tolist()
@@ -64,6 +65,7 @@ class Generate_training_sample(object):
         counter = 0
 
         for step in range(len(self.test_batches)):
+            tf.logging.info('step: %d/%d of generating training samples', step, len(self.batches))
             decode_result =  self._model.run_attention_weight_ypred_auc(self._sess, self.test_batches[step])
             decode_result['y_pred_auc'] = decode_result['y_pred_auc'].tolist()
 
