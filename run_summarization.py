@@ -451,7 +451,6 @@ def run_pre_train_sentimentor(model, bachter, max_run_epoch, sess,saver, train_d
     while epoch < max_run_epoch:
         batches = bachter.get_batches(mode='train')
         step = 0
-        t0 = time.time()
         loss_window = 0.0
         
         while step < len(batches):
@@ -467,10 +466,8 @@ def run_pre_train_sentimentor(model, bachter, max_run_epoch, sess,saver, train_d
 
             train_step = results['global_step']  # we need this to update our running average loss
             if train_step % 100 == 0:
-                t1 = time.time()
-                tf.logging.info('seconds for %d training sentimentor step: %.3f ', train_step, (t1 - t0) / 100)
-                t0 = time.time()
-                tf.logging.info('step: %d, loss: %f', step, loss_window / 100)  # print the loss to screen
+                tf.logging.info('epoch: %d/%d, step: %d/%d, loss: %f', 
+                                epoch, max_run_epoch, step, len(batches), loss_window / 100) 
                 loss_window = 0.0
 
             # if train_step % 10000 == 0:
