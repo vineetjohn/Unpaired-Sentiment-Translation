@@ -735,7 +735,6 @@ def main(unused_argv):
     
     
         loss_window = 0
-        t0 = time.time()
         print ("begin reinforcement learning:")
         for epoch in range(30):
             batches = batcher.get_batches(mode='train')
@@ -768,20 +767,17 @@ def main(unused_argv):
                 loss = result['loss']
                 loss_window += loss
                 if train_step % 100 == 0:
-                    t1 = time.time()
-                    tf.logging.info('seconds for %d training generator step: %.3f ', train_step, (t1 - t0) / 100)
-                    t0 = time.time()
-                    tf.logging.info('loss: %f', loss_window / 100)  # print the loss to screen
+                    tf.logging.info('epoch: %d/30, step: %d/%d, loss: %f', 
+                                    epoch, i, len(batches), loss_window / 100) 
                     loss_window = 0.0
-                if train_step % 10000 == 0:
                     
-                    generated.generate_test_negetive_example("test-generate-transfer/" + str(epoch) + "epoch_step" + str(train_step) + "_temp_positive", batcher)
-                    generated.generate_test_positive_example("test-generate/" + str(epoch) + "epoch_step" + str(train_step) + "_temp_positive", batcher)
-                    #saver_ge.save(sess, train_dir + "/model", global_step=train_step)
-                    #run_test_our_method(cla_cnn_batcher, cnn_classifier, sess_cnn_cls,
-                    #                    "test-generate-transfer/" + str(epoch) + "epoch_step" + str(
-                    #                        train_step) + "_temp_positive" + "/*")
-    
+                generated.generate_test_negetive_example("test-generate-transfer/" + str(epoch) + "epoch_step" + str(train_step) + "_temp_positive", batcher)
+                generated.generate_test_positive_example("test-generate/" + str(epoch) + "epoch_step" + str(train_step) + "_temp_positive", batcher)
+                #saver_ge.save(sess, train_dir + "/model", global_step=train_step)
+                #run_test_our_method(cla_cnn_batcher, cnn_classifier, sess_cnn_cls,
+                #                    "test-generate-transfer/" + str(epoch) + "epoch_step" + str(
+                #                        train_step) + "_temp_positive" + "/*")
+
                 cla_batch, bleu = output_to_classification_batch(result['generated'], current_batch, batcher, cla_batcher,cc)
                 result = model_class.run_ypred_auc(sess_cls,cla_batch)
                 reward_result_sentiment = result['y_pred_auc']
