@@ -164,13 +164,13 @@ def setup_training_cnnclassifier(model):
     return sess, saver,train_dir
 
     
-def run_pre_train_generator(model, batcher, max_run_epoch, sess, saver, train_dir, generator,cla_cnn_batcher, cnn_classifier, sess_cnn):
+def run_pre_train_generator(model, batcher, max_run_epoch, sess, saver, train_dir, 
+                            generator,cla_cnn_batcher, cnn_classifier, sess_cnn):
     tf.logging.info("starting run_pre_train_generator")
     epoch = 0
     while epoch < max_run_epoch:
         batches = batcher.get_batches(mode='train')
         step = 0
-        t0 = time.time()
         loss_window = 0.0
         #print(len(batches))
         while step < len(batches):
@@ -185,10 +185,8 @@ def run_pre_train_generator(model, batcher, max_run_epoch, sess, saver, train_di
 
             train_step = results['global_step']  # we need this to update our running average loss
             if train_step % 100 == 0:
-                t1 = time.time()
-                tf.logging.info('seconds for %d training generator step: %.3f ', train_step, (t1 - t0) / 100)
-                t0 = time.time()
-                tf.logging.info('loss: %f', loss_window / 100)  # print the loss to screen
+                tf.logging.info('epoch: %d/%d, step: %d/%d, loss: %f', 
+                                epoch, max_run_epoch, step, len(batches), loss_window / 100)                 
                 loss_window = 0.0
             # if train_step % 10000 == 0:
 
