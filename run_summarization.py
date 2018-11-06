@@ -301,7 +301,7 @@ def read_test_result_our(path, target_score):
     new_queue = []
 
     filelist = glob.glob(path)  # get the list of datafiles
-    assert filelist, ('Error: Empty filelist at %s' % data_path)  # check filelist isn't empty
+    assert filelist, ('Error: Empty filelist at %s' % path)  # check filelist isn't empty
     filelist = sorted(filelist)
 
 
@@ -328,7 +328,7 @@ def read_test_input(path, target_score):
     new_queue = []
 
     filelist = glob.glob(path)  # get the list of datafiles
-    assert filelist, ('Error: Empty filelist at %s' % data_path)  # check filelist isn't empty
+    assert filelist, ('Error: Empty filelist at %s' % path)  # check filelist isn't empty
     filelist = sorted(filelist)
 
 
@@ -363,8 +363,6 @@ def run_test_our_method(cla_batcher,cnn_classifier,sess_cnn,filename):
 
     list_ref = []
     list_pre = []
-    right = 0
-    all = 0
     
     right_cnn = 0
     all_cnn = 0
@@ -813,4 +811,4 @@ def main(unused_argv):
 
 
 if __name__ == '__main__':
-  tf.app.run()
+    tf.app.run()
