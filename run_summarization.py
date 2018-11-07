@@ -765,12 +765,7 @@ def main(unused_argv):
                 result = model.run_train_step(sess_ge,current_batch)
                 train_step = result['global_step']  # we need this to update our running average loss
                 loss = result['loss']
-                loss_window += loss
-                if i % 100 == 0:
-                    tf.logging.info('epoch: %d/30, step: %d/%d, loss: %f', 
-                                    epoch, i, len(batches), loss_window / 100) 
-                    loss_window = 0.0
-                    
+                tf.logging.info('epoch: %d/30, step: %d/%d, loss: %f', epoch + 1, i + 1, len(batches), loss)
                 generated.generate_test_negetive_example("test-generate-transfer/" + str(epoch) + "epoch_step" + str(train_step) + "_temp_positive", batcher)
                 generated.generate_test_positive_example("test-generate/" + str(epoch) + "epoch_step" + str(train_step) + "_temp_positive", batcher)
                 #saver_ge.save(sess, train_dir + "/model", global_step=train_step)
