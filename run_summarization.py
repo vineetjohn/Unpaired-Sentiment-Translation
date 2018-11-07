@@ -736,7 +736,7 @@ def main(unused_argv):
     
     
         loss_window = 0
-        print ("begin reinforcement learning:")
+        print("begin reinforcement learning:")
         for epoch in range(30):
             batches = batcher.get_batches(mode='train')
             for i in range(len(batches)):
@@ -767,7 +767,7 @@ def main(unused_argv):
                 train_step = result['global_step']  # we need this to update our running average loss
                 loss = result['loss']
                 loss_window += loss
-                if train_step % 100 == 0:
+                if i % 100 == 0:
                     tf.logging.info('epoch: %d/30, step: %d/%d, loss: %f', 
                                     epoch, i, len(batches), loss_window / 100) 
                     loss_window = 0.0
