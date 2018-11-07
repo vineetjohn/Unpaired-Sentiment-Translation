@@ -269,7 +269,6 @@ def run_train_cnn_classifier(model, batcher, max_run_epoch,  sess,saver, train_d
     while epoch < max_run_epoch:
         batches = batcher.get_batches(mode='train')
         step = 0
-        t0 = time.time()
         loss_window = 0.0
         while step < len(batches):
             current_batch = batches[step]
@@ -281,12 +280,9 @@ def run_train_cnn_classifier(model, batcher, max_run_epoch,  sess,saver, train_d
                 raise Exception("Loss is not finite. Stopping.")
             train_step = results['global_step']  # we need this to update our running average loss
             if train_step % 100 == 0:
-                t1 = time.time()
-                tf.logging.info('seconds for %d training discriminator step: %.3f ', train_step, (t1 - t0) / 100)
-                t0 = time.time()
-                tf.logging.info('loss: %f', loss_window / 100)  # print the loss to screen
+                tf.logging.info('epoch: %d/%d, step: %d/%d, loss: %f', 
+                                epoch, max_run_epoch, step, len(batches), loss_window / 100) 
                 loss_window = 0.0
-            # if train_step % 10000 == 0:
         acc = run_test_cnn_classification(model, batcher, sess, saver, str(train_step))
         tf.logging.info('cnn evaluate test acc: %.6f', acc)  # print the loss to screen
         saver.save(sess, train_dir + "/model", global_step=train_step)
@@ -673,6 +669,7 @@ def main(unused_argv):
         #util.load_ckpt(saver_cnn_cls, sess_cnn_cls, ckpt_dir="train-cnnclassification")
         run_train_cnn_classifier(cnn_classifier, cla_cnn_batcher, 1, sess_cnn_cls, saver_cnn_cls, train_dir_cnn_cls) #1
         
+        print("Generating test transfer files")
         files= os.listdir("test-generate-transfer/") 
         for file_ in files: 
           run_test_our_method(cla_cnn_batcher, cnn_classifier, sess_cnn_cls,
