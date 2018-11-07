@@ -766,6 +766,9 @@ def main(unused_argv):
                 train_step = result['global_step']  # we need this to update our running average loss
                 loss = result['loss']
                 tf.logging.info('epoch: %d/30, step: %d/%d, loss: %f', epoch + 1, i + 1, len(batches), loss)
+
+
+                tf.logging.info("generating test examples")
                 generated.generate_test_negetive_example("test-generate-transfer/" + str(epoch) + "epoch_step" + str(train_step) + "_temp_positive", batcher)
                 generated.generate_test_positive_example("test-generate/" + str(epoch) + "epoch_step" + str(train_step) + "_temp_positive", batcher)
                 #saver_ge.save(sess, train_dir + "/model", global_step=train_step)
@@ -773,6 +776,7 @@ def main(unused_argv):
                 #                    "test-generate-transfer/" + str(epoch) + "epoch_step" + str(
                 #                        train_step) + "_temp_positive" + "/*")
 
+                tf.logging.info("classifying output and evaluating")
                 cla_batch, bleu = output_to_classification_batch(result['generated'], current_batch, batcher, cla_batcher,cc)
                 result = model_class.run_ypred_auc(sess_cls,cla_batch)
                 reward_result_sentiment = result['y_pred_auc']
@@ -783,7 +787,8 @@ def main(unused_argv):
                 current_batch.score = 1-current_batch.score
     
                 result = model.max_generator(sess_ge, current_batch)
-    
+
+                tf.logging.info("classifying output and re-evaluating")
                 cla_batch, bleu = output_to_classification_batch(result['generated'], current_batch, batcher, cla_batcher,cc)
                 result = model_class.run_ypred_auc(sess_cls, cla_batch)
                 reward_result_transfer_sentiment = result['y_pred_auc']
@@ -798,6 +803,7 @@ def main(unused_argv):
                 reward = reward_result_transfer #reward_de + reward_result_sentiment + 
                 #tf.logging.info("reward_de: "+str(reward_de))
     
+                tf.logging.info("running sentiment train step")
                 model_sentiment.run_train_step(sess_sen, sentiment_batch, reward)
 
 
