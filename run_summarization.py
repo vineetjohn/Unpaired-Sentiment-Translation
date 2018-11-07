@@ -721,21 +721,23 @@ def main(unused_argv):
 
    
         generated = Generated_sample(model, vocab, batcher, sess_ge)
-        print("Start pre-training generator......")
+        tf.logging.info("Start pre-training generator......")
         run_pre_train_generator(model, batcher, 1, sess_ge, saver_ge, train_dir_ge, generated, cla_cnn_batcher, cnn_classifier, sess_cnn_cls) # 4
     
         generated.generate_test_negetive_example("temp_negetive", batcher) # batcher, model_class, sess_cls, cla_batcher
         generated.generate_test_positive_example(
             "temp_positive", batcher)
+        tf.logging.info("finished pre-training generator")
     
         #run_test_our_method(cla_cnn_batcher, cnn_classifier, sess_cnn_cls,
         #                    "temp_negetive" + "/*")
     
     
         loss_window = 0
-        print("begin reinforcement learning:")
+        tf.logging.info("begin reinforcement learning:")
         for epoch in range(30):
             batches = batcher.get_batches(mode='train')
+            tf.logging.info("num_batches: {}".format(len(batches)))
             for i in range(len(batches)):
                 current_batch =  copy.deepcopy(batches[i])
                 sentiment_batch = batch_sentiment_batch(current_batch,sentiment_batcher)
