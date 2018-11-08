@@ -733,9 +733,9 @@ def main(unused_argv):
         #                    "temp_negetive" + "/*")
     
     
-        loss_window = 0
         tf.logging.info("begin reinforcement learning:")
-        for epoch in range(30):
+        total_epochs = 1
+        for epoch in range(total_epochs):
             batches = batcher.get_batches(mode='train')
             tf.logging.info("num_batches: {}".format(len(batches)))
             for i in range(len(batches)):
@@ -765,7 +765,8 @@ def main(unused_argv):
                 result = model.run_train_step(sess_ge,current_batch)
                 train_step = result['global_step']  # we need this to update our running average loss
                 loss = result['loss']
-                tf.logging.info('epoch: %d/30, step: %d/%d, loss: %f', epoch + 1, i + 1, len(batches), loss)
+                tf.logging.info('epoch: %d/%d, step: %d/%d, loss: %f', 
+                                epoch + 1, total_epochs, i + 1, len(batches), loss)
 
 
                 tf.logging.info("generating test examples")
