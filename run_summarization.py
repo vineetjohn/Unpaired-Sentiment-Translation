@@ -769,16 +769,17 @@ def main(unused_argv):
                                 epoch + 1, total_epochs, i + 1, len(batches), loss)
 
 
-                tf.logging.info("generating test examples")
-                generated.generate_test_negetive_example("test-generate-transfer/" + str(epoch) + "epoch_step" + str(train_step) + "_temp_positive", batcher)
-                generated.generate_test_positive_example("test-generate/" + str(epoch) + "epoch_step" + str(train_step) + "_temp_positive", batcher)
+                # tf.logging.info("generating test examples")
+                # generated.generate_test_negetive_example("test-generate-transfer/" + str(epoch) + "epoch_step" + str(train_step) + "_temp_positive", batcher)
+                # generated.generate_test_positive_example("test-generate/" + str(epoch) + "epoch_step" + str(train_step) + "_temp_positive", batcher)
                 #saver_ge.save(sess, train_dir + "/model", global_step=train_step)
                 #run_test_our_method(cla_cnn_batcher, cnn_classifier, sess_cnn_cls,
                 #                    "test-generate-transfer/" + str(epoch) + "epoch_step" + str(
                 #                        train_step) + "_temp_positive" + "/*")
 
                 tf.logging.info("classifying output and evaluating")
-                cla_batch, bleu = output_to_classification_batch(result['generated'], current_batch, batcher, cla_batcher,cc)
+                cla_batch, bleu = output_to_classification_batch(
+                    result['generated'], current_batch, batcher, cla_batcher,cc)
                 result = model_class.run_ypred_auc(sess_cls,cla_batch)
                 reward_result_sentiment = result['y_pred_auc']
                 reward_result_bleu = np.array(bleu)
