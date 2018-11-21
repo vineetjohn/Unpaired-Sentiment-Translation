@@ -734,7 +734,8 @@ def main(unused_argv):
     
     
         tf.logging.info("begin reinforcement learning:")
-        total_epochs = 1
+        total_epochs = 30
+        step = 1
         for epoch in range(total_epochs):
             batches = batcher.get_batches(mode='train')
             tf.logging.info("num_batches: {}".format(len(batches)))
@@ -768,14 +769,14 @@ def main(unused_argv):
                 tf.logging.info('epoch: %d/%d, step: %d/%d, loss: %f', 
                                 epoch + 1, total_epochs, i + 1, len(batches), loss)
 
-
-                # tf.logging.info("generating test examples")
-                # generated.generate_test_negetive_example("test-generate-transfer/" + str(epoch) + "epoch_step" + str(train_step) + "_temp_positive", batcher)
-                # generated.generate_test_positive_example("test-generate/" + str(epoch) + "epoch_step" + str(train_step) + "_temp_positive", batcher)
-                #saver_ge.save(sess, train_dir + "/model", global_step=train_step)
-                #run_test_our_method(cla_cnn_batcher, cnn_classifier, sess_cnn_cls,
-                #                    "test-generate-transfer/" + str(epoch) + "epoch_step" + str(
-                #                        train_step) + "_temp_positive" + "/*")
+                if not step % 10000:
+                    tf.logging.info("generating test examples")
+                    generated.generate_test_negetive_example("test-generate-transfer/" + str(epoch) + "epoch_step" + str(train_step) + "_temp_positive", batcher)
+                    generated.generate_test_positive_example("test-generate/" + str(epoch) + "epoch_step" + str(train_step) + "_temp_positive", batcher)
+                    # saver_ge.save(sess, train_dir + "/model", global_step=train_step)
+                    run_test_our_method(cla_cnn_batcher, cnn_classifier, sess_cnn_cls,
+                                    "test-generate-transfer/" + str(epoch) + "epoch_step" + str(
+                                        train_step) + "_temp_positive" + "/*")
 
                 tf.logging.info("classifying output and evaluating")
                 cla_batch, bleu = output_to_classification_batch(
@@ -807,6 +808,7 @@ def main(unused_argv):
     
                 tf.logging.info("running sentiment train step")
                 model_sentiment.run_train_step(sess_sen, sentiment_batch, reward)
+                step += 1
 
 
 if __name__ == '__main__':
